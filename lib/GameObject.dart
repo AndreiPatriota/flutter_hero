@@ -84,4 +84,6 @@ abstract class GameObject{
         Positioned(child: Container());
   }
 
+  void move();/*Abstract method meant to move the object in the screen*/
+
 }
