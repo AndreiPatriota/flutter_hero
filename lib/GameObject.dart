@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-abstract class GameObject{
+abstract class GameObject
+{
 
   //**********************Attributes**********************/
 
