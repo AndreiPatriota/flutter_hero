@@ -36,6 +36,18 @@ class Player extends GameObject {
   void move() {
     /*This method changes the objects position according to the speed
     * and the direction*/
+
+    //Accounts for the horizontal movement, to the left and to the right,
+    //making sure it will not cross the rightmost and leftmost borders
+    if (this.x > 0 && this.moveHorizontal == -1) this.x -= this.speed;
+    if (this.x < (this.screenWidth - this.width) && this.moveHorizontal == 1)
+      this.x += this.speed;
+
+    //Accounts for the vertical movement, to the top and to the bottom,
+    //making sure it will not cross the topmost and bottommost borders
+    if (this.y > 40 && this.moveHorizontal == -1) this.y -= this.speed;
+    if (this.y < (this.screenWidth - this.height - 10) &&
+        this.moveHorizontal == 1) this.y += this.speed;
   }
 
   @override
@@ -55,5 +67,30 @@ class Player extends GameObject {
             top: this.y,
           )
         : Container();
+  }
+
+  void orientationChanged()
+  {
+    /*This method changes the object's steer angle according to
+    * its horizontal and vertical directions*/
+
+    this.radians = 0.0;//Initializes the steer angle
+
+    //Verifies the movement directions, and changes the steer
+    //angle accordingly
+    if(this.moveHorizontal == 1 && this.moveVertical == -1)
+      this.radians = this.angles2Radians['angle45'];
+    else if(this.moveHorizontal == 1 && this.moveVertical == 0)
+      this.radians = this.angles2Radians['angle90'];
+    else if(this.moveHorizontal == 1 && this.moveVertical == 1)
+      this.radians = this.angles2Radians['angle135'];
+    else if(this.moveHorizontal == 0 && this.moveVertical == 1)
+      this.radians = this.angles2Radians['angle180'];
+    else if(this.moveHorizontal == -1 && this.moveVertical == 1)
+      this.radians = this.angles2Radians['angle225'];
+    else if(this.moveHorizontal == -1 && this.moveVertical == 0)
+      this.radians = this.angles2Radians['angle270'];
+    else if(this.moveHorizontal == -1 && this.moveVertical == -1)
+      this.radians = this.angles2Radians['angle315'];
   }
 }
