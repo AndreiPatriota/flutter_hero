@@ -38,8 +38,8 @@ class GameScreenState extends State with TickerProviderStateMixin {
     if (gcore.gameLoopController == null)
       gcore.firstInitialization(context, this);
 
-    //Assembles a list of Positioned widgets that will hold the graphics
-    //displayed on the main screen
+    //Starts assembling the stack of graphical objects with the static
+    // elements that will populate the game screen
     List<Widget> stackChildren = [
       Positioned(
           //Background image
@@ -61,7 +61,7 @@ class GameScreenState extends State with TickerProviderStateMixin {
         left: 4,
       ),
       Positioned(
-        //Linear progress bar
+        //Energy bar
         child: LinearProgressIndicator(
           value: gcore.player.energy,
           backgroundColor: Colors.white,
@@ -72,9 +72,34 @@ class GameScreenState extends State with TickerProviderStateMixin {
         width: gcore.screenWidth - 124,
         height: 22,
       ),
-      gcore.crystal.draw()
+      gcore.crystal.draw() //Crystal
     ];
 
-    return Container();
+    //Appends the obstacle objects to the stack
+    for (int i = 0; i < 3; i++) {
+      stackChildren.add(gcore.fish[i].draw());
+      stackChildren.add(gcore.robots[i].draw());
+      stackChildren.add(gcore.aliens[i].draw());
+      stackChildren.add(gcore.asteroids[i].draw());
+    }
+
+    //Appends the planet and the player objects to the stack
+    stackChildren.add(gcore.planet.draw());
+    stackChildren.add(gcore.player.draw());
+
+    //Appends the explosion objects to the stack
+    for (var explosion in gcore.explosions) {
+      stackChildren.add(explosion.draw());
+    }
+
+    //Returns a Scaffold widget that will use the stack
+    return Scaffold(
+      body: GestureDetector(
+        onPanStart: InputController.onPanStart,
+        onPanUpdate: InputController.onPanUpdate,
+        onPanEnd: InputController.onPanEnd,
+        child: Stack(children: stackChildren),
+      ),
+    );
   }
 }
