@@ -13,17 +13,16 @@ class Enemy extends GameObject
 
   Enemy(double inScreenWidth, double inScreenHeight,
         String inBaseFileName, int inWidth, int inHeight,
-        int inNumFrames, int inFrameSkip, Function inAnimationCallback,
-        int inSpeed, int inMoveDirection):
+        int inNumFrames, int inFrameSkip, int inMoveDirection,
+        int inSpeed):
         super(inScreenWidth, inScreenHeight, inBaseFileName,
-          inWidth, inHeight, inNumFrames, inFrameSkip, inAnimationCallback)
+          inWidth, inHeight, inNumFrames, inFrameSkip, null)
   {
     /*This is the constructor method*/
     this..speed = inSpeed
         ..moveDirection = inMoveDirection;
   }
 
-  @override
   void move()
   {
     /*This method changes the objects position according to the speed

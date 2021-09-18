@@ -32,7 +32,6 @@ class Player extends GameObject {
     this.speed = inSpeed;
   }
 
-  @override
   void move() {
     /*This method changes the objects position according to the speed
     * and the direction*/

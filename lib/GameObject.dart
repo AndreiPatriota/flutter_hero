@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class GameObject
+class GameObject
 {
 
   //**********************Attributes**********************/
@@ -85,6 +85,5 @@ abstract class GameObject
         Positioned(child: Container());
   }
 
-  void move();/*Abstract method meant to move the object in the screen*/
 
 }
