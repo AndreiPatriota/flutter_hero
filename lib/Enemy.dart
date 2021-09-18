@@ -12,18 +12,17 @@ class Enemy extends GameObject
   //**********************Methods**********************/
 
   Enemy(double inScreenWidth, double inScreenHeight,
-        String inBaseFileName, int inWidth, int inHeight,
-        int inNumFrames, int inFrameSkip, Function inAnimationCallback,
-        int inSpeed, int inMoveDirection):
+      String inBaseFileName, int inWidth, int inHeight,
+      int inNumFrames, int inFrameSkip, int inMoveDirection,
+      int inSpeed):
         super(inScreenWidth, inScreenHeight, inBaseFileName,
-          inWidth, inHeight, inNumFrames, inFrameSkip, inAnimationCallback)
+          inWidth, inHeight, inNumFrames, inFrameSkip, null)
   {
     /*This is the constructor method*/
     this..speed = inSpeed
-        ..moveDirection = inMoveDirection;
+      ..moveDirection = inMoveDirection;
   }
 
-  @override
   void move()
   {
     /*This method changes the objects position according to the speed
@@ -31,7 +30,7 @@ class Enemy extends GameObject
 
     //Verifies the movement direction
     if(this.moveDirection == 1)//to the right
-    {
+        {
 
       //Moves the object to the right, and checks if it reached the right
       //border of the screen
@@ -40,7 +39,7 @@ class Enemy extends GameObject
 
     }
     else//to the left
-    {
+        {
 
       //Moves the object to the left, and checks if it reached the left
       //border of the screen
