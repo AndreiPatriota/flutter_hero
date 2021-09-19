@@ -15,17 +15,18 @@ double screenHeight;
 AnimationController gameLoopController;
 Animation gameLoopAnimation;
 GameObject crystal;
-List fish;
-List robots;
-List aliens;
-List asteroids;
+List<Enemy> fish;
+List<Enemy> robots;
+List<Enemy> aliens;
+List<Enemy> asteroids;
 Player player;
 GameObject planet;
-var explosions = [];
+List<GameObject> explosions = [];
 AudioCache audioCache;
 
 void firstTimeInitialization(BuildContext context, dynamic inState) {
-  /*This function initializes the global objects in this module*/
+  /*This function initializes the global objects the will be used to
+  * control the game*/
 
   state = inState; //Saves a GameScreenSate object reference
 
@@ -43,7 +44,7 @@ void firstTimeInitialization(BuildContext context, dynamic inState) {
   screenHeight = MediaQuery.of(context).size.height;
 
   //Instantiate some objects that will provide an API for controlling
-  // the graphical elements
+  // the sprites
   crystal =
       GameObject(screenWidth, screenHeight, 'crystal', 32, 30, 4, 6, null);
   planet = GameObject(screenWidth, screenHeight, 'planet', 64, 64, 1, 0, null);
@@ -69,7 +70,7 @@ void firstTimeInitialization(BuildContext context, dynamic inState) {
     Enemy(screenWidth, screenHeight, 'asteroid', 48, 48, 2, 6, 1, 4),
   ];
 
-  //Instantiate a AnimationController and a Animation
+  //Instantiate an AnimationController and an Animation
   // objects, respectively
   gameLoopController = AnimationController(
       vsync: inState, duration: Duration(microseconds: 1000));
@@ -77,7 +78,7 @@ void firstTimeInitialization(BuildContext context, dynamic inState) {
       CurvedAnimation(parent: gameLoopController, curve: Curves.linear));
 
   //Adds the appropriate listeners to the Animation object:
-  // - the end change of state listeners;
+  // - the change of state listener;
   // - the tick listener
   gameLoopAnimation.addStatusListener((status) {
     /*Runs everytime the status of the animation changes*/
@@ -93,11 +94,135 @@ void firstTimeInitialization(BuildContext context, dynamic inState) {
   gameLoopAnimation.addListener(gameLoop);
 
 
-  resetGame(true);
+  resetGame(resetEnemies: true);
   InputController.init(player);
   gameLoopController.forward(); //Starts the game loop
 }
 
-void resetGame(bool bool) {}
+void resetGame({bool resetEnemies = false})
+{
+  /*Resets the game, by setting the positions of all moving
+  * objets to some initial default values*/
 
-void gameLoop(){}
+  //Moves the player to the initial position
+  player..energy = 0.0
+        ..x = (screenWidth / 2) - (player.width /2)
+        ..y = screenHeight - player.height - 24
+        ..moveHorizontal = 0
+        ..moveVertical = 0
+        ..orientationChanged();
+
+  //Resets the position of the crystal object
+  crystal.y = 34.0;
+  randomlyPositionObject(crystal);
+
+  //Resets the position of the planet object
+  planet.y = screenHeight - planet.height - 10;
+  randomlyPositionObject(planet);
+
+  //Verifies if the position of the enemies will need
+  // to the reset
+  if(resetEnemies)
+  {
+    //Defines the initial X position of the enemies
+    var xValsFish = [70.0, 192.0, 312.0];
+    var xValsRobots = [64.0, 192.0, 320.0];
+    var xValsAliens = [44.0, 192.0, 340.0];
+    var xValsAstetoids = [24.0, 192.0, 360.0];
+
+    //Loops through the lists of enemies setting their x and y
+    // position. Also sets them visible
+    for(var idx = 0; idx < 3; idx++)
+    {
+        fish[idx]
+          ..x = xValsFish[idx]
+          ..y = fish[idx].y + 110
+          ..isVisible = true;
+        robots[idx]
+          ..x = xValsRobots[idx]
+          ..y = robots[idx].y + 120
+          ..isVisible = true;
+        aliens[idx]
+          ..x = xValsAliens[idx]
+          ..y = aliens[idx].y + 130
+          ..isVisible = true;
+        asteroids[idx]
+         ..x = xValsAstetoids[idx]
+         ..y = asteroids[idx].y + 140
+         ..isVisible = true;
+    }
+  }
+
+  explosions = []; //Clears the explosions
+  planet.isVisible = true;//Makes the player visible
+
+}
+
+void gameLoop()
+{
+  /*Runs everytime there is a tick, i.e, every 16,667ms, so there
+  * will be, approximately, 60 rebuilds per second*/
+
+  crystal.animate();//Updates crystal frame
+
+  //Updates and moves all the enemies, as well as the player
+  for(var idx = 0; idx < 3; idx++)
+  {
+    fish[idx]..move()..animate();
+    robots[idx]..move()..animate();
+    aliens[idx]..move()..animate();
+    asteroids[idx]..move()..animate();
+  }
+  player..move()..animate();
+
+  //Updates the explosions frames
+  for(GameObject explosion in explosions)
+  {
+    explosion.animate();
+  }
+
+  //Checks for collision between the player and planet
+  // or between the player and the crystal
+  if(player.collidesWith(crystal))
+  {
+    player.sucksEnergy();
+  }
+  else if(player.collidesWith(planet))
+  {
+    player.losesEnergy();
+  }
+  else
+  {
+    if(player.energy > 0 && player.energy < 1) player.energy = 0;
+  }
+
+  //Checks for collisions between the player and the obstacles
+  for(var idx = 0; idx < 3; idx++)
+  {
+    //Verifies if any collision has happened
+    if(player.collidesWith(fish[idx]) || player.collidesWith(robots[idx])
+       || player.collidesWith(aliens[idx]) || player.collidesWith(asteroids[idx]))
+    {
+      
+      audioCache.play('explosion.mp3');//Play the explosion sound
+      player.isVisible = false;//Takes the player out of the screen
+
+      //Appends an explosion, at the same position of the player,
+      // to the explosions list
+      explosions.add(GameObject(screenWidth, screenHeight,
+                                'explosion', 50, 50, 5, 4,
+                                (){resetGame(resetEnemies: false);})
+                                ..x = player.x
+                                ..y = player.y);
+      score = (score - 50) > 0 ? score - 50 : 0;//Deducts 50 points from the score
+
+    }
+  }
+
+  state.setState(() {});//Rebuilds the GameScreen
+}
+
+
+void randomlyPositionObject(GameObject crystal) {
+}
+

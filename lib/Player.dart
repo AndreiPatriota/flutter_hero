@@ -5,11 +5,11 @@ class Player extends GameObject {
   //**********************Attributes**********************/
 
   //Movement related attributes
-  int speed = 0;
-  int moveHorizontal = 0;
-  int moveVertical = 0;
-  double radians = 0.0;
-  Map angles2Radians = {
+  var speed = 0;
+  var moveHorizontal = 0;
+  var moveVertical = 0;
+  var radians = 0.0;
+  var angles2Radians = {
     'angle45': 0.7853981633974483,
     'angle90': 2 * 0.7853981633974483,
     'angle135': 3 * 0.7853981633974483,
@@ -70,8 +70,8 @@ class Player extends GameObject {
 
   void orientationChanged()
   {
-    /*This method changes the object's steer angle according to
-    * its horizontal and vertical directions*/
+    ///This method changes the object's steer angle according to
+    /* its horizontal and vertical directions*/
 
     this.radians = 0.0;//Initializes the steer angle
 
@@ -92,4 +92,15 @@ class Player extends GameObject {
     else if(this.moveHorizontal == -1 && this.moveVertical == -1)
       this.radians = this.angles2Radians['angle315'];
   }
+
+  bool collidesWith(GameObject someObject)
+  {
+    return true;
+  }
+
+  void sucksEnergy()
+  {}
+
+  void losesEnergy()
+  {}
 }
