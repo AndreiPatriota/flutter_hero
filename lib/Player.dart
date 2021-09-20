@@ -92,4 +92,39 @@ class Player extends GameObject {
     else if(this.moveHorizontal == -1 && this.moveVertical == -1)
       this.radians = this.angles2Radians['angle315'];
   }
+
+  bool collidesWith(GameObject someObject)
+  {
+    /*Verifies if some sprite has collided with the player*/
+
+    //Can't collide with something invisible
+    if(!this.isVisible || !someObject.isVisible) return false;
+
+    //Defines the borders of the player
+    var leftPlayer = this.x;
+    var rightPlayer = this.x + this.width;
+    var topPlayer = this.y;
+    var bottomPlayer = this.y + this.height;
+
+    //Defines the borders of the object
+    var leftObj = someObject.x;
+    var rightObj = someObject.x + someObject.width;
+    var topObj = someObject.y;
+    var bottomObj = someObject.y + someObject.height;
+
+    //Verifies the if any condition that makes collision impossible
+    // has been met
+    if(bottomPlayer < topObj) return false;
+    if(bottomObj < topPlayer) return false;
+    if(rightPlayer < leftObj) return false;
+    if(rightObj < leftPlayer) return false;
+
+    return true;//If it came to this point, there was, indeed, a collision
+  }
+
+  void sucksEnergy()
+  {}
+
+  void losesEnergy()
+  {}
 }
