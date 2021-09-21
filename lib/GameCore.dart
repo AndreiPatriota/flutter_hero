@@ -185,11 +185,19 @@ void gameLoop()
   // or between the player and the crystal
   if(player.collidesWith(crystal))
   {
-    player.sucksEnergy();
+
+    if(player.isEmpty) audioCache.play('fill.mp3');//Plays the sound in first contact
+    player.suckEnergy();//Suck energy
+    if(player.isFull) randomlyPositionObject(crystal);//When full, moves the crystal away
+
   }
   else if(player.collidesWith(planet))
   {
-    player.losesEnergy();
+
+    if(player.isFull) audioCache.play('deliver.mp3');//Plays the sound in first contact
+    player.deliverEnergy();//Deliver energy
+    if(player.finishedDelivery) explodeAllEnemies();//When empty, explode the enemies
+
   }
   else
   {
@@ -223,6 +231,57 @@ void gameLoop()
 }
 
 
-void randomlyPositionObject(GameObject crystal) {
+void randomlyPositionObject(GameObject someObject)
+{
+  /*This function randomly places a GameObject instance on the screen
+  * , making sure that it will not overlap with the player*/
+
+  //Assigns a new random X position to the object
+  someObject.x = (random.nextInt(screenWidth.toInt() - someObject.width)).toDouble();
+
+  //In case there is overlap with player, a recursive call is triggered
+  if(player.collidesWith(someObject)) randomlyPositionObject(someObject);
+}
+
+void explodeAllEnemies()
+{
+  /*This function explodes all the enemies on the screen
+  * and increases the score by 100*/
+
+  //Plays the explosion track, and increases the score by 100
+  var callback = (){resetGame(resetEnemies: true);};
+  audioCache.play('explosion.mp3');
+  score += 100;
+
+  //Loops through the lists of enemies to explode them one by one
+  for(var idx = 0; idx < 3; idx++)
+  {
+    //Makes the enemies invisible
+    fish[idx].isVisible = false;
+    robots[idx].isVisible = false;
+    aliens[idx].isVisible = false;
+    asteroids[idx].isVisible = false;
+
+    //Appends one explosion to the list of explosions for every single
+    // enemy on the exact same location it used to be
+    explosions.add(GameObject(screenWidth, screenHeight,
+        'explosion', 50, 50, 5, 4, callback)
+      ..x = fish[idx].x
+      ..y = fish[idx].y);
+    explosions.add(GameObject(screenWidth, screenHeight,
+        'explosion', 50, 50, 5, 4, callback)
+      ..x = robots[idx].x
+      ..y = robots[idx].y);
+    explosions.add(GameObject(screenWidth, screenHeight,
+        'explosion', 50, 50, 5, 4, callback)
+      ..x = aliens[idx].x
+      ..y = aliens[idx].y);
+    explosions.add(GameObject(screenWidth, screenHeight,
+        'explosion', 50, 50, 5, 4, callback)
+      ..x = asteroids[idx].x
+      ..y = asteroids[idx].y);
+  }
+
+  player.finishedDelivery = false;
 }
 

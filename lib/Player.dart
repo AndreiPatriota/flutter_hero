@@ -9,6 +9,7 @@ class Player extends GameObject {
   var moveHorizontal = 0;
   var moveVertical = 0;
   var radians = 0.0;
+  var finishedDelivery = false;
   var angles2Radians = {
     'angle45': 0.7853981633974483,
     'angle90': 2 * 0.7853981633974483,
@@ -98,9 +99,12 @@ class Player extends GameObject {
     return true;
   }
 
-  void sucksEnergy()
+  void suckEnergy()
   {}
 
-  void losesEnergy()
+  void deliverEnergy()
   {}
+
+  bool get isEmpty => this.energy == 0;
+  bool get isFull => this.energy == 1;
 }
