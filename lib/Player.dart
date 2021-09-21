@@ -71,8 +71,8 @@ class Player extends GameObject {
 
   void orientationChanged()
   {
-    /*This method changes the object's steer angle according to
-    * its horizontal and vertical directions*/
+    ///This method changes the object's steer angle according to
+    /* its horizontal and vertical directions*/
 
     this.radians = 0.0;//Initializes the steer angle
 
