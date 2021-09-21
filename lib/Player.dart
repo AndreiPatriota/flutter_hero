@@ -8,6 +8,7 @@ class Player extends GameObject {
   int speed = 0;
   int moveHorizontal = 0;
   int moveVertical = 0;
+  var finishedDelivery = false;
   double radians = 0.0;
   Map angles2Radians = {
     'angle45': 0.7853981633974483,
@@ -135,8 +136,22 @@ class Player extends GameObject {
   {
     /*This method decreases the energy by 1%*/
 
-    this.energy = (this.energy - 0.01) > 0
-        ? (this.energy - 0.01)
-        : 0;
+    //Verifies if the player has some energy to deliver
+    if(this.energy > 0)
+    {
+      //Decreases energy by 1% and verifies if it has finished delivering
+      this.energy -= 0.01;
+      if(this.energy <= 0)
+      {
+          //Finishes delivery
+          this.energy = 0.0;
+          this.finishedDelivery = true;
+      }
+    }
+
   }
+
+  bool get isEmpty => this.energy == 0;
+  bool get isFull => this.energy == 1;
+  
 }
