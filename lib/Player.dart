@@ -112,7 +112,7 @@ class Player extends GameObject {
     var topObj = someObject.y;
     var bottomObj = someObject.y + someObject.height;
 
-    //Verifies the if any condition that makes collision impossible
+    //Verifies if any condition that makes collision impossible
     // has been met
     if(bottomPlayer < topObj) return false;
     if(bottomObj < topPlayer) return false;
@@ -122,9 +122,21 @@ class Player extends GameObject {
     return true;//If it came to this point, there was, indeed, a collision
   }
 
-  void sucksEnergy()
-  {}
+  void suckEnergy()
+  {
+    /*This method increases the energy by 1%*/
 
-  void losesEnergy()
-  {}
+    this.energy = (this.energy + 0.01) < 1
+                  ? (this.energy + 0.01)
+                  : 1;
+  }
+
+  void deliverEnergy()
+  {
+    /*This method decreases the energy by 1%*/
+
+    this.energy = (this.energy - 0.01) > 0
+        ? (this.energy - 0.01)
+        : 0;
+  }
 }
