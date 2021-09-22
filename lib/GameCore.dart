@@ -45,8 +45,7 @@ void firstTimeInitialization(BuildContext context, dynamic inState) {
 
   //Instantiate some objects that will provide an API for controlling
   // the sprites
-  crystal =
-      GameObject(screenWidth, screenHeight, 'crystal', 32, 30, 4, 6, null);
+  crystal = GameObject(screenWidth, screenHeight, 'crystal', 32, 30, 4, 6, null);
   planet = GameObject(screenWidth, screenHeight, 'planet', 64, 64, 1, 0, null);
   player = Player(screenWidth, screenHeight, 'player', 40, 34, 2, 6, 2);
   fish = [

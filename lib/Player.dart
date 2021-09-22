@@ -24,10 +24,12 @@ class Player extends GameObject {
 
   //**********************Methods**********************/
 
-  Player(double inScreenWidth, double inScreenHeight, String inBaseFileName,
-      int inWidth, int inHeight, int inNumFrames, int inFrameSkip, inSpeed)
-      : super(inScreenWidth, inScreenHeight, inBaseFileName, inWidth, inHeight,
-            inNumFrames, inFrameSkip, null) {
+  Player(double inScreenWidth, double inScreenHeight,
+      String inBaseFileName, int inWidth, int inHeight,
+      int inNumFrames, int inFrameSkip, int inSpeed)
+      : super(inScreenWidth, inScreenHeight,
+      inBaseFileName, inWidth, inHeight,
+      inNumFrames, inFrameSkip, null) {
     /*This is the constructor method*/
 
     this.speed = inSpeed;
@@ -61,7 +63,7 @@ class Player extends GameObject {
         ? Positioned(
             child: Transform.rotate(
               angle: this.radians,
-              child: this.frames[this.frameCount],
+              child: this.frames[this.currentFrame],
             ),
             left: this.x,
             top: this.y,

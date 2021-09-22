@@ -36,7 +36,7 @@ class GameScreenState extends State with TickerProviderStateMixin {
 
     //Initializes global parameters the first time it runs
     if (gcore.gameLoopController == null)
-      gcore.firstInitialization(context, this);
+      gcore.firstTimeInitialization(context, this);
 
     //Starts assembling the stack of graphical objects with the static
     // elements that will populate the game screen
@@ -48,7 +48,7 @@ class GameScreenState extends State with TickerProviderStateMixin {
         height: gcore.screenHeight,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/background.png'), fit: BoxFit.cover)),
+                image: AssetImage('assets/images/background.png'), fit: BoxFit.cover)),
       )),
       Positioned(
         //Score
@@ -76,7 +76,8 @@ class GameScreenState extends State with TickerProviderStateMixin {
     ];
 
     //Appends the obstacle objects to the stack
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++)
+    {
       stackChildren.add(gcore.fish[i].draw());
       stackChildren.add(gcore.robots[i].draw());
       stackChildren.add(gcore.aliens[i].draw());
@@ -88,7 +89,8 @@ class GameScreenState extends State with TickerProviderStateMixin {
     stackChildren.add(gcore.player.draw());
 
     //Appends the explosion objects to the stack
-    for (var explosion in gcore.explosions) {
+    for (var explosion in gcore.explosions)
+    {
       stackChildren.add(explosion.draw());
     }
 
