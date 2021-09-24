@@ -5,19 +5,19 @@ class Player extends GameObject {
   //**********************Attributes**********************/
 
   //Movement related attributes
-  int speed = 0;
-  int moveHorizontal = 0;
-  int moveVertical = 0;
+  var speed = 0;
+  var moveHorizontal = 0;
+  var moveVertical = 0;
   var finishedDelivery = false;
-  double radians = 0.0;
-  Map angles2Radians = {
-    'angle45': 0.7853981633974483,
-    'angle90': 2 * 0.7853981633974483,
-    'angle135': 3 * 0.7853981633974483,
-    'angle180': 4 * 0.7853981633974483,
-    'angle225': 5 * 0.7853981633974483,
-    'angle270': 6 * 0.7853981633974483,
-    'angle315': 7 * 0.7853981633974483,
+  var radians = 0.0;
+  var angles2Radians = {
+    'angle45': 0.78539816339,
+    'angle90': 1.57079632679,
+    'angle135': 2.35619449019,
+    'angle180': 3.14159265359,
+    'angle225': 3.92699081699,
+    'angle270': 4.71238898038,
+    'angle315': 5.49778714378,
   };
 
   double energy = 0.0; //Crystal energy
@@ -29,31 +29,34 @@ class Player extends GameObject {
       int inNumFrames, int inFrameSkip, int inSpeed)
       : super(inScreenWidth, inScreenHeight,
       inBaseFileName, inWidth, inHeight,
-      inNumFrames, inFrameSkip, null) {
+      inNumFrames, inFrameSkip, null)
+  {
     /*This is the constructor method*/
 
     this.speed = inSpeed;
   }
 
-  void move() {
+  void move()
+  {
     /*This method changes the objects position according to the speed
     * and the direction*/
 
     //Accounts for the horizontal movement, to the left and to the right,
     //making sure it will not cross the rightmost and leftmost borders
-    if (this.x > 0 && this.moveHorizontal == -1) this.x -= this.speed;
-    if (this.x < (this.screenWidth - this.width) && this.moveHorizontal == 1)
-      this.x += this.speed;
+    if (this.x > 0 && this.moveHorizontal == -1) {this.x -= this.speed;}
+    else if (this.x < (this.screenWidth - this.width) && this.moveHorizontal == 1)
+      {this.x += this.speed;}
 
     //Accounts for the vertical movement, to the top and to the bottom,
     //making sure it will not cross the topmost and bottommost borders
-    if (this.y > 40 && this.moveHorizontal == -1) this.y -= this.speed;
-    if (this.y < (this.screenWidth - this.height - 10) &&
-        this.moveHorizontal == 1) this.y += this.speed;
+    if (this.y > 40 && this.moveVertical == -1) {this.y -= this.speed;}
+    else if (this.y < (this.screenHeight - this.height - 10) &&
+        this.moveVertical == 1) {this.y += this.speed;}
   }
 
   @override
-  Widget draw() {
+  Widget draw()
+  {
     /*This method draws the player object by using a Positioned
     * widget*/
 
@@ -73,8 +76,8 @@ class Player extends GameObject {
 
   void orientationChanged()
   {
-    ///This method changes the object's steer angle according to
-    /* its horizontal and vertical directions*/
+    /*This method changes the object's steer angle according to
+    * its horizontal and vertical directions*/
 
     this.radians = 0.0;//Initializes the steer angle
 

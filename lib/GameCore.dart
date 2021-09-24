@@ -24,7 +24,8 @@ GameObject planet;
 List<GameObject> explosions = [];
 AudioCache audioCache;
 
-void firstTimeInitialization(BuildContext context, dynamic inState) {
+void firstTimeInitialization(BuildContext context, dynamic inState)
+{
   /*This function initializes the global objects the will be used to
   * control the game*/
 
@@ -109,7 +110,8 @@ void resetGame({bool resetEnemies = false})
         ..y = screenHeight - player.height - 24
         ..moveHorizontal = 0
         ..moveVertical = 0
-        ..orientationChanged();
+        ..orientationChanged()
+        ..isVisible = true;
 
   //Resets the position of the crystal object
   crystal.y = 450.0;
@@ -223,14 +225,11 @@ void gameLoop()
                                 ..y = player.y);
       score = (score - 50) > 0 ? score - 50 : 0;//Deducts 50 points from the score
 
-      player.isVisible = true;
-
     }
   }
 
   state.setState(() {});//Rebuilds the GameScreen
 }
-
 
 void randomlyPositionObject(GameObject someObject)
 {
