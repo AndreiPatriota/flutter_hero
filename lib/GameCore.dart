@@ -33,10 +33,10 @@ void firstTimeInitialization(BuildContext context, dynamic inState) {
   //Initiates the MP3 API
   audioCache = new AudioCache();
   audioCache.loadAll([
-    'sounds/delivery.mp3',
-    'sounds/explosions.mp3',
-    'sounds/fill.mp3',
-    'sounds/thrust.mp3'
+    'assets/sounds/delivery.mp3',
+    'assets/sounds/explosions.mp3',
+    'assets/sounds/fill.mp3',
+    'assets/sounds/thrust.mp3'
   ]);
 
   //Gets the device's screen dimensions
@@ -49,24 +49,24 @@ void firstTimeInitialization(BuildContext context, dynamic inState) {
   planet = GameObject(screenWidth, screenHeight, 'planet', 64, 64, 1, 0, null);
   player = Player(screenWidth, screenHeight, 'player', 40, 34, 2, 6, 2);
   fish = [
-    Enemy(screenWidth, screenHeight, 'fish', 48, 48, 2, 6, 1, 4),
-    Enemy(screenWidth, screenHeight, 'fish', 48, 48, 2, 6, 1, 4),
-    Enemy(screenWidth, screenHeight, 'fish', 48, 48, 2, 6, 1, 4),
+    Enemy(screenWidth, screenHeight, 'fish', 48, 48, 2, 6, 1, 1),
+    Enemy(screenWidth, screenHeight, 'fish', 48, 48, 2, 6, 1, 1),
+    Enemy(screenWidth, screenHeight, 'fish', 48, 48, 2, 6, 1, 1),
   ];
   robots = [
-    Enemy(screenWidth, screenHeight, 'robot', 48, 48, 2, 6, 1, 4),
-    Enemy(screenWidth, screenHeight, 'robot', 48, 48, 2, 6, 1, 4),
-    Enemy(screenWidth, screenHeight, 'robot', 48, 48, 2, 6, 1, 4),
+    Enemy(screenWidth, screenHeight, 'robot', 48, 48, 2, 6, 1, 1),
+    Enemy(screenWidth, screenHeight, 'robot', 48, 48, 2, 6, 1, 1),
+    Enemy(screenWidth, screenHeight, 'robot', 48, 48, 2, 6, 1, 1),
   ];
   aliens = [
-    Enemy(screenWidth, screenHeight, 'alien', 48, 48, 2, 6, 1, 4),
-    Enemy(screenWidth, screenHeight, 'alien', 48, 48, 2, 6, 1, 4),
-    Enemy(screenWidth, screenHeight, 'alien', 48, 48, 2, 6, 1, 4),
+    Enemy(screenWidth, screenHeight, 'alien', 48, 48, 2, 6, 1, 1),
+    Enemy(screenWidth, screenHeight, 'alien', 48, 48, 2, 6, 1, 1),
+    Enemy(screenWidth, screenHeight, 'alien', 48, 48, 2, 6, 1, 1),
   ];
   asteroids = [
-    Enemy(screenWidth, screenHeight, 'asteroid', 48, 48, 2, 6, 1, 4),
-    Enemy(screenWidth, screenHeight, 'asteroid', 48, 48, 2, 6, 1, 4),
-    Enemy(screenWidth, screenHeight, 'asteroid', 48, 48, 2, 6, 1, 4),
+    Enemy(screenWidth, screenHeight, 'asteroid', 48, 48, 2, 6, 1, 1),
+    Enemy(screenWidth, screenHeight, 'asteroid', 48, 48, 2, 6, 1, 1),
+    Enemy(screenWidth, screenHeight, 'asteroid', 48, 48, 2, 6, 1, 1),
   ];
 
   //Instantiate an AnimationController and an Animation
@@ -112,7 +112,7 @@ void resetGame({bool resetEnemies = false})
         ..orientationChanged();
 
   //Resets the position of the crystal object
-  crystal.y = 34.0;
+  crystal.y = 450.0;
   randomlyPositionObject(crystal);
 
   //Resets the position of the planet object
@@ -185,7 +185,7 @@ void gameLoop()
   if(player.collidesWith(crystal))
   {
 
-    if(player.isEmpty) audioCache.play('fill.mp3');//Plays the sound in first contact
+    if(player.isEmpty) audioCache.play('sounds/fill.mp3');//Plays the sound in first contact
     player.suckEnergy();//Suck energy
     if(player.isFull) randomlyPositionObject(crystal);//When full, moves the crystal away
 
@@ -193,7 +193,7 @@ void gameLoop()
   else if(player.collidesWith(planet))
   {
 
-    if(player.isFull) audioCache.play('deliver.mp3');//Plays the sound in first contact
+    if(player.isFull) audioCache.play('sounds/deliver.mp3');//Plays the sound in first contact
     player.deliverEnergy();//Deliver energy
     if(player.finishedDelivery) explodeAllEnemies();//When empty, explode the enemies
 
@@ -211,7 +211,7 @@ void gameLoop()
        || player.collidesWith(aliens[idx]) || player.collidesWith(asteroids[idx]))
     {
       
-      audioCache.play('explosion.mp3');//Play the explosion sound
+      audioCache.play('sounds/explosion.mp3');//Play the explosion sound
       player.isVisible = false;//Takes the player out of the screen
 
       //Appends an explosion, at the same position of the player,
@@ -222,6 +222,8 @@ void gameLoop()
                                 ..x = player.x
                                 ..y = player.y);
       score = (score - 50) > 0 ? score - 50 : 0;//Deducts 50 points from the score
+
+      player.isVisible = true;
 
     }
   }
@@ -249,7 +251,7 @@ void explodeAllEnemies()
 
   //Plays the explosion track, and increases the score by 100
   var callback = (){resetGame(resetEnemies: true);};
-  audioCache.play('explosion.mp3');
+  audioCache.play('sounds/explosion.mp3');
   score += 100;
 
   //Loops through the lists of enemies to explode them one by one
